@@ -1,0 +1,179 @@
+i = 0
+local a = false
+local Sg = Instance.new("ScreenGui")
+Sg.Parent = game.Players.LocalPlayer.PlayerGui
+Sg.DisplayOrder = 999
+local Frame = Instance.new("Frame")
+Frame.Parent = Sg
+Frame.BackgroundColor3 = Color3.new(0.105882, 0.164706, 0.207843)
+Frame.Size = UDim2.new(0, 300, 0, 130)
+Frame.BorderSizePixel = 0
+Frame.Visible = false
+Frame.Transparency = 0.4
+local button = Instance.new("TextButton")
+button.Parent = Sg
+button.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
+button.Position = UDim2.new(0, 0, 0, 0)
+button.Size = UDim2.new(0, 40, 0, 30)
+button.BorderSizePixel = 0
+button.Font = Enum.Font.SourceSans
+button.Text = "TP Script"
+button.TextColor3 = Color3.new(1, 1, 1)
+button.TextScaled = true
+button.Transparency = 0.4
+local ScFrame = Instance.new("ScrollingFrame")
+ScFrame.Size = UDim2.new(0, 300, 0, 100)
+ScFrame.Parent = Frame
+ScFrame.Position = UDim2.new(0, 0, 0, 30)
+ScFrame.BackgroundColor3 = Color3.new(0.184314, 0.290196, 0.364706)
+ScFrame.BorderSizePixel = 0
+ScFrame.CanvasSize = UDim2.new(0,0,0,0)
+ScFrame.Transparency = 0.4
+local List = Instance.new("UIListLayout")
+List.Parent = ScFrame
+local TextBox = Instance.new("TextBox")
+TextBox.Parent = Frame
+TextBox.Size = UDim2.new(0, 220, 0, 30)
+TextBox.Position = UDim2.new(0, 40, 0, 0)
+TextBox.BackgroundColor3 = Color3.new(0.184314, 0.290196, 0.364706)
+TextBox.BorderSizePixel = 1
+TextBox.Font = Enum.Font.SourceSans
+TextBox.Text = "Название точки"
+TextBox.TextColor3 = Color3.new(1, 1, 1)
+TextBox.TextScaled = true
+TextBox.Transparency = 0.4
+local buttonadd = Instance.new("TextButton")
+buttonadd.Parent = Frame
+buttonadd.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
+buttonadd.Position = UDim2.new(0, 260, 0, 0)
+buttonadd.Size = UDim2.new(0, 40, 0, 30)
+buttonadd.BorderSizePixel = 0
+buttonadd.Font = Enum.Font.SourceSans
+buttonadd.Text = "Add"
+buttonadd.TextColor3 = Color3.new(1, 1, 1)
+buttonadd.TextScaled = true
+buttonadd.Transparency = 0.4
+local ad = Instance.new("TextLabel")
+ad.Parent = Frame
+ad.Position = UDim2.new(0,0,0,130)
+ad.BackgroundTransparency = 1
+ad.TextScaled = true
+ad.Text = "ТГ автора: @sjhfkejdn"
+ad.Size = UDim2.new(0, 300, 0, 15)
+ad.TextXAlignment = Enum.TextXAlignment.Left
+local adtgc = Instance.new("TextLabel")
+adtgc.Parent = Frame
+adtgc.Position = UDim2.new(0,0,0,145)
+adtgc.BackgroundTransparency = 1
+adtgc.TextScaled = true
+adtgc.Text = "ТГК с лимитками: @freelimitedrbx"
+adtgc.Size = UDim2.new(0, 300, 0, 15)
+adtgc.TextXAlignment = Enum.TextXAlignment.Left
+button.MouseButton1Click:Connect(function()
+	if Frame.Visible == false then
+		Frame.Visible = true
+	else
+		Frame.Visible = false
+	end
+end)
+buttonadd.MouseButton1Click:Connect(function()
+	local PartTP = Instance.new("Part")
+	PartTP.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+	PartTP.CanCollide = false
+	PartTP.Transparency = 0.7
+	PartTP.Parent = workspace
+	PartTP.Anchored = true
+	PartTP.Size = Vector3.new(1, 1, 1)
+	PartTP.Name = TextBox.Text.."_"..game.Players.LocalPlayer.Name
+	local BilGui = Instance.new("BillboardGui")
+	BilGui.Parent = PartTP
+	BilGui.Size = UDim2.new(0, 100, 0, 100)
+	BilGui.StudsOffset = Vector3.new(0, 1, 0)
+	BilGui.AlwaysOnTop = true
+	BilGui.Adornee = PartTP
+	BilGui.Enabled = true
+	local TextLabel = Instance.new("TextLabel")
+	TextLabel.Parent = BilGui
+	TextLabel.Size = UDim2.new(0, 100, 0, 100)
+	TextLabel.BackgroundTransparency = 1
+	TextLabel.Text = TextBox.Text
+	local frameTP = Instance.new("Frame")
+	frameTP.Parent = ScFrame
+	frameTP.Size = UDim2.new(0, 300, 0, 30)
+	frameTP.BackgroundTransparency = 0.8
+	local NameTP = Instance.new("TextButton")
+	NameTP.Parent = frameTP
+	NameTP.BackgroundTransparency = 1
+	NameTP.TextScaled = true
+	NameTP.Text = TextBox.Text
+	NameTP.Size = UDim2.new(0, 220, 0, 30)
+	local UICorner = Instance.new("UICorner")
+	UICorner.Parent = frameTP
+	ScFrame.CanvasSize = ScFrame.CanvasSize + UDim2.new(0,0,0,30)
+	i += 1
+	local id = Instance.new("TextLabel")
+	id.Parent = frameTP
+	id.Size = UDim2.new(0, 10, 0, 30)
+	id.TextScaled = true
+	id.Text = i
+	id.BackgroundTransparency = 1
+	local DelButton = Instance.new("TextButton")
+	DelButton.Parent = frameTP
+	DelButton.Size = UDim2.new(0, 40, 0, 30)
+	DelButton.Position = UDim2.new(0, 250, 0, 0)
+	DelButton.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
+	UICorner:Clone().Parent = DelButton
+	DelButton.TextScaled = true
+	DelButton.Text = "Delete"
+	local HideButton = Instance.new("TextButton")
+	HideButton.Parent = frameTP
+	HideButton.Size = UDim2.new(0, 40, 0, 30)
+	HideButton.Position = UDim2.new(0, 210, 0, 0)
+	HideButton.BackgroundColor3 = Color3.new(0, 0, 1)
+	UICorner:Clone().Parent = HideButton
+	HideButton.TextScaled = true
+	HideButton.Text = "Hide"
+	local DataPart = Instance.new("ObjectValue")
+	DataPart.Value = PartTP
+	DataPart.Parent = frameTP
+	click(NameTP, DelButton, DataPart, frameTP, HideButton)
+end)
+function click(Tp, Del, Part, frame, Hide)
+	while wait()do
+		Tp.MouseButton1Click:Connect(function()
+			if a == false then
+				a = true
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Part.Value.CFrame
+				wait(.1)
+				a = false
+			end
+		end)
+		Del.MouseButton1Click:Connect(function()
+			if a == false then
+				a = true
+				Part.Value:Destroy()
+				frame:Destroy()
+				i -= 1
+				ScFrame.CanvasSize = ScFrame.CanvasSize - UDim2.new(0,0,0,30)
+				wait(.1)
+				a = false
+			end
+		end)
+		Hide.MouseButton1Click:Connect(function()
+			if a == false then
+				a = true
+				if Hide.Text == "Hide" then
+					Hide.Text = "Show"
+					Part.Value.Transparency = 1
+					Part.Value.BillboardGui.Enabled = false
+				else
+					Hide.Text = "Hide"
+					Part.Value.Transparency = 0.7
+					Part.Value.BillboardGui.Enabled = true
+				end
+				wait(.1)
+				a = false
+			end
+		end)
+	end
+end
