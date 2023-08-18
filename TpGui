@@ -1,16 +1,27 @@
 i = 0
 local a = false
+local UserInputService = game:GetService("UserInputService")
+local runService = game:GetService("RunService")
 local Sg = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local button = Instance.new("TextButton")
+local ScFrame = Instance.new("ScrollingFrame")
+local List = Instance.new("UIListLayout")
+local TextBox = Instance.new("TextBox")
+local buttonadd = Instance.new("TextButton")
+local ad = Instance.new("TextLabel")
+local adtgc = Instance.new("TextLabel")
+local SelectSize = Instance.new("TextButton")
 Sg.Parent = game.Players.LocalPlayer.PlayerGui
 Sg.DisplayOrder = 999
-local Frame = Instance.new("Frame")
+Sg.ResetOnSpawn = false
+Sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 Frame.Parent = Sg
 Frame.BackgroundColor3 = Color3.new(0.105882, 0.164706, 0.207843)
 Frame.Size = UDim2.new(0, 300, 0, 130)
 Frame.BorderSizePixel = 0
 Frame.Visible = false
 Frame.Transparency = 0.4
-local button = Instance.new("TextButton")
 button.Parent = Sg
 button.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
 button.Position = UDim2.new(0, 0, 0, 0)
@@ -21,7 +32,6 @@ button.Text = "TP Script"
 button.TextColor3 = Color3.new(1, 1, 1)
 button.TextScaled = true
 button.Transparency = 0.4
-local ScFrame = Instance.new("ScrollingFrame")
 ScFrame.Size = UDim2.new(0, 300, 0, 100)
 ScFrame.Parent = Frame
 ScFrame.Position = UDim2.new(0, 0, 0, 30)
@@ -29,23 +39,24 @@ ScFrame.BackgroundColor3 = Color3.new(0.184314, 0.290196, 0.364706)
 ScFrame.BorderSizePixel = 0
 ScFrame.CanvasSize = UDim2.new(0,0,0,0)
 ScFrame.Transparency = 0.4
-local List = Instance.new("UIListLayout")
+ScFrame.ScrollingDirection = Enum.ScrollingDirection.Y
+ScFrame.ScrollBarThickness = 1
 List.Parent = ScFrame
-local TextBox = Instance.new("TextBox")
 TextBox.Parent = Frame
 TextBox.Size = UDim2.new(0, 220, 0, 30)
 TextBox.Position = UDim2.new(0, 40, 0, 0)
 TextBox.BackgroundColor3 = Color3.new(0.184314, 0.290196, 0.364706)
 TextBox.BorderSizePixel = 1
 TextBox.Font = Enum.Font.SourceSans
-TextBox.Text = "Название точки"
+TextBox.Text = ""
+TextBox.PlaceholderText = "Название точки"
 TextBox.TextColor3 = Color3.new(1, 1, 1)
 TextBox.TextScaled = true
 TextBox.Transparency = 0.4
-local buttonadd = Instance.new("TextButton")
+TextBox.ClearTextOnFocus = false
 buttonadd.Parent = Frame
 buttonadd.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
-buttonadd.Position = UDim2.new(0, 260, 0, 0)
+buttonadd.Position = Frame.Position + UDim2.new(0, 260, 0, 0)
 buttonadd.Size = UDim2.new(0, 40, 0, 30)
 buttonadd.BorderSizePixel = 0
 buttonadd.Font = Enum.Font.SourceSans
@@ -53,7 +64,6 @@ buttonadd.Text = "Add"
 buttonadd.TextColor3 = Color3.new(1, 1, 1)
 buttonadd.TextScaled = true
 buttonadd.Transparency = 0.4
-local ad = Instance.new("TextLabel")
 ad.Parent = Frame
 ad.Position = UDim2.new(0,0,0,130)
 ad.BackgroundTransparency = 1
@@ -61,7 +71,6 @@ ad.TextScaled = true
 ad.Text = "ТГ автора: @sjhfkejdn"
 ad.Size = UDim2.new(0, 300, 0, 15)
 ad.TextXAlignment = Enum.TextXAlignment.Left
-local adtgc = Instance.new("TextLabel")
 adtgc.Parent = Frame
 adtgc.Position = UDim2.new(0,0,0,145)
 adtgc.BackgroundTransparency = 1
@@ -69,15 +78,34 @@ adtgc.TextScaled = true
 adtgc.Text = "ТГК с лимитками: @freelimitedrbx"
 adtgc.Size = UDim2.new(0, 300, 0, 15)
 adtgc.TextXAlignment = Enum.TextXAlignment.Left
+SelectSize.Parent = Sg
+SelectSize.Size = UDim2.new(0,5,0,5)
+SelectSize.Position = UDim2.new(0, 300, 0, 130)
+SelectSize.Text = ""
+SelectSize.Visible = false
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "TP Gui [Russian]";
+	Text = "Кто прочитал гей (без обид)";
+	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"})
+Duration = 10;
+
 button.MouseButton1Click:Connect(function()
 	if Frame.Visible == false then
 		Frame.Visible = true
+		SelectSize.Visible = true
 	else
 		Frame.Visible = false
+		SelectSize.Visible = false
 	end
 end)
 buttonadd.MouseButton1Click:Connect(function()
 	local PartTP = Instance.new("Part")
+	local BilGui = Instance.new("BillboardGui")
+	local TextLabel = Instance.new("TextLabel")
+	local frameTP = Instance.new("Frame")
+	local NameTP = Instance.new("TextButton")
+	local UICorner = Instance.new("UICorner")
 	PartTP.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 	PartTP.CanCollide = false
 	PartTP.Transparency = 0.7
@@ -85,29 +113,25 @@ buttonadd.MouseButton1Click:Connect(function()
 	PartTP.Anchored = true
 	PartTP.Size = Vector3.new(1, 1, 1)
 	PartTP.Name = TextBox.Text.."_"..game.Players.LocalPlayer.Name
-	local BilGui = Instance.new("BillboardGui")
 	BilGui.Parent = PartTP
 	BilGui.Size = UDim2.new(0, 100, 0, 100)
 	BilGui.StudsOffset = Vector3.new(0, 1, 0)
 	BilGui.AlwaysOnTop = true
 	BilGui.Adornee = PartTP
 	BilGui.Enabled = true
-	local TextLabel = Instance.new("TextLabel")
 	TextLabel.Parent = BilGui
 	TextLabel.Size = UDim2.new(0, 100, 0, 100)
 	TextLabel.BackgroundTransparency = 1
 	TextLabel.Text = TextBox.Text
-	local frameTP = Instance.new("Frame")
 	frameTP.Parent = ScFrame
 	frameTP.Size = UDim2.new(0, 300, 0, 30)
 	frameTP.BackgroundTransparency = 0.8
-	local NameTP = Instance.new("TextButton")
 	NameTP.Parent = frameTP
 	NameTP.BackgroundTransparency = 1
 	NameTP.TextScaled = true
 	NameTP.Text = TextBox.Text
-	NameTP.Size = UDim2.new(0, 220, 0, 30)
-	local UICorner = Instance.new("UICorner")
+	NameTP.Size = UDim2.new(0, 210, 0, 30)
+	NameTP.Position = UDim2.new(0,10,0,0)
 	UICorner.Parent = frameTP
 	ScFrame.CanvasSize = ScFrame.CanvasSize + UDim2.new(0,0,0,30)
 	i += 1
@@ -120,7 +144,7 @@ buttonadd.MouseButton1Click:Connect(function()
 	local DelButton = Instance.new("TextButton")
 	DelButton.Parent = frameTP
 	DelButton.Size = UDim2.new(0, 40, 0, 30)
-	DelButton.Position = UDim2.new(0, 250, 0, 0)
+	DelButton.Position = UDim2.new(0, 260, 0, 0)
 	DelButton.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
 	UICorner:Clone().Parent = DelButton
 	DelButton.TextScaled = true
@@ -128,7 +152,7 @@ buttonadd.MouseButton1Click:Connect(function()
 	local HideButton = Instance.new("TextButton")
 	HideButton.Parent = frameTP
 	HideButton.Size = UDim2.new(0, 40, 0, 30)
-	HideButton.Position = UDim2.new(0, 210, 0, 0)
+	HideButton.Position = UDim2.new(0, 220, 0, 0)
 	HideButton.BackgroundColor3 = Color3.new(0, 0, 1)
 	UICorner:Clone().Parent = HideButton
 	HideButton.TextScaled = true
@@ -138,6 +162,70 @@ buttonadd.MouseButton1Click:Connect(function()
 	DataPart.Parent = frameTP
 	click(NameTP, DelButton, DataPart, frameTP, HideButton)
 end)
+local gui = button
+local dragging
+local dragInput
+local dragStart
+local startPos
+function Lerp(a, b, m)
+	Frame.Position = button.Position
+	SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,Frame.Position.Y.Offset+Frame.Size.Y.Offset)
+	if button.Position.X.Offset > 340 then
+		Frame.Position = button.Position - UDim2.new(0,260,0,0)
+		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset-5,0,SelectSize.Position.Y.Offset)
+		buttonadd.Position = UDim2.new(0,0,0,0)
+	else
+		Frame.Position = button.Position
+		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,SelectSize.Position.Y.Offset)
+		buttonadd.Position = UDim2.new(0,260,0,0)
+	end
+	return a + (b - a) * m
+end;
+local lastMousePos
+local lastGoalPos
+local DRAG_SPEED = (8); -- // The speed of the UI darg.
+function Update(dt)
+	if not (startPos) then return end;
+	if not (dragging) and (lastGoalPos) then
+		gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, lastGoalPos.X.Offset, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, lastGoalPos.Y.Offset, dt * DRAG_SPEED))
+		return 
+	end;
+	local delta = (lastMousePos - UserInputService:GetMouseLocation())
+	local xGoal = (startPos.X.Offset - delta.X);
+	local yGoal = (startPos.Y.Offset - delta.Y);
+	lastGoalPos = UDim2.new(startPos.X.Scale, xGoal, startPos.Y.Scale, yGoal)
+	gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
+	Frame.Position = button.Position
+	SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,Frame.Position.Y.Offset+Frame.Size.Y.Offset)
+	if button.Position.X.Offset > 340 then
+		Frame.Position = button.Position - UDim2.new(0,260,0,0)
+		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset-5,0,SelectSize.Position.Y.Offset)
+	else
+		Frame.Position = button.Position
+		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,SelectSize.Position.Y.Offset)
+
+	end
+end;
+gui.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		dragStart = input.Position
+		startPos = gui.Position
+		lastMousePos = UserInputService:GetMouseLocation()
+
+		input.Changed:Connect(function()
+			if input.UserInputState == Enum.UserInputState.End then
+				dragging = false
+			end
+		end)
+	end
+end)
+gui.InputChanged:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+		dragInput = input
+	end
+end)
+runService.Heartbeat:Connect(Update)
 function click(Tp, Del, Part, frame, Hide)
 	while wait()do
 		Tp.MouseButton1Click:Connect(function()
@@ -177,3 +265,19 @@ function click(Tp, Del, Part, frame, Hide)
 		end)
 	end
 end
+local movingSlider = false
+SelectSize.MouseButton1Down:Connect(function()
+	movingSlider = true
+end)
+UserInputService.InputEnded:Connect(function()
+	movingSlider = false
+end)
+game.Players.LocalPlayer:GetMouse().Move:Connect(function()
+	if movingSlider == true then
+		
+		Frame.Size = UDim2.new(0,Frame.Size.X.Offset,0,game.Players.LocalPlayer:GetMouse().Y-Frame.Position.Y.Offset)
+		ScFrame.Size = UDim2.new(0,ScFrame.Size.X.Offset,0,(game.Players.LocalPlayer:GetMouse().Y-Frame.Position.Y.Offset)-30)
+		ad.Position = UDim2.new(0,0,0,Frame.Size.Y.Offset)
+		adtgc.Position = UDim2.new(0,0,0,Frame.Size.Y.Offset+15)
+	end
+end)
