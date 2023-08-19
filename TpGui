@@ -1,7 +1,9 @@
 i = 0
 local a = false
+local h = 0
 local UserInputService = game:GetService("UserInputService")
 local runService = game:GetService("RunService")
+local EditF = Instance.new("Folder")
 local Sg = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local button = Instance.new("TextButton")
@@ -9,6 +11,7 @@ local ScFrame = Instance.new("ScrollingFrame")
 local List = Instance.new("UIListLayout")
 local TextBox = Instance.new("TextBox")
 local buttonadd = Instance.new("TextButton")
+local mouseadd = Instance.new("TextButton")
 local ad = Instance.new("TextLabel")
 local adtgc = Instance.new("TextLabel")
 local SelectSize = Instance.new("TextButton")
@@ -16,6 +19,9 @@ Sg.Parent = game.Players.LocalPlayer.PlayerGui
 Sg.DisplayOrder = 999
 Sg.ResetOnSpawn = false
 Sg.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Sg.Name = "TPGui by ma_sta"
+EditF.Parent = Sg
+EditF.Name = "EditF"
 Frame.Parent = Sg
 Frame.BackgroundColor3 = Color3.new(0.105882, 0.164706, 0.207843)
 Frame.Size = UDim2.new(0, 300, 0, 130)
@@ -32,6 +38,7 @@ button.Text = "TP Script"
 button.TextColor3 = Color3.new(1, 1, 1)
 button.TextScaled = true
 button.Transparency = 0.4
+button.Name = "Open/close menu"
 ScFrame.Size = UDim2.new(0, 300, 0, 100)
 ScFrame.Parent = Frame
 ScFrame.Position = UDim2.new(0, 0, 0, 30)
@@ -54,6 +61,7 @@ TextBox.TextColor3 = Color3.new(1, 1, 1)
 TextBox.TextScaled = true
 TextBox.Transparency = 0.4
 TextBox.ClearTextOnFocus = false
+TextBox.Name = "Name"
 buttonadd.Parent = Frame
 buttonadd.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
 buttonadd.Position = Frame.Position + UDim2.new(0, 260, 0, 0)
@@ -64,6 +72,18 @@ buttonadd.Text = "Add"
 buttonadd.TextColor3 = Color3.new(1, 1, 1)
 buttonadd.TextScaled = true
 buttonadd.Transparency = 0.4
+buttonadd.Name = "Add"
+mouseadd.Parent = Frame
+mouseadd.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
+mouseadd.Position = Frame.Position + UDim2.new(0, 300, 0, 0)
+mouseadd.Size = UDim2.new(0, 40, 0, 30)
+mouseadd.BorderSizePixel = 0
+mouseadd.Font = Enum.Font.SourceSans
+mouseadd.Text = "Mouse (BETA)"
+mouseadd.TextColor3 = Color3.new(1, 1, 1)
+mouseadd.TextScaled = true
+mouseadd.Transparency = 0.4
+mouseadd.Name = "MouseAdd"
 ad.Parent = Frame
 ad.Position = UDim2.new(0,0,0,130)
 ad.BackgroundTransparency = 1
@@ -71,6 +91,7 @@ ad.TextScaled = true
 ad.Text = "ТГ автора: @sjhfkejdn"
 ad.Size = UDim2.new(0, 300, 0, 15)
 ad.TextXAlignment = Enum.TextXAlignment.Left
+ad.Name = "ad"
 adtgc.Parent = Frame
 adtgc.Position = UDim2.new(0,0,0,145)
 adtgc.BackgroundTransparency = 1
@@ -78,11 +99,13 @@ adtgc.TextScaled = true
 adtgc.Text = "ТГК с лимитками: @freelimitedrbx"
 adtgc.Size = UDim2.new(0, 300, 0, 15)
 adtgc.TextXAlignment = Enum.TextXAlignment.Left
+adtgc.Name = "ad"
 SelectSize.Parent = Sg
 SelectSize.Size = UDim2.new(0,5,0,5)
 SelectSize.Position = UDim2.new(0, 300, 0, 130)
 SelectSize.Text = ""
 SelectSize.Visible = false
+SelectSize.Name = "Size"
 
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "TP Gui [Russian]";
@@ -141,26 +164,34 @@ buttonadd.MouseButton1Click:Connect(function()
 	id.TextScaled = true
 	id.Text = i
 	id.BackgroundTransparency = 1
-	local DelButton = Instance.new("TextButton")
+	local DelButton = Instance.new("ImageButton")
 	DelButton.Parent = frameTP
-	DelButton.Size = UDim2.new(0, 40, 0, 30)
-	DelButton.Position = UDim2.new(0, 260, 0, 0)
+	DelButton.Size = UDim2.new(0, 26, 0, 30)
+	DelButton.Position = UDim2.new(0, 274, 0, 0)
 	DelButton.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
 	UICorner:Clone().Parent = DelButton
-	DelButton.TextScaled = true
-	DelButton.Text = "Delete"
-	local HideButton = Instance.new("TextButton")
+	DelButton.Image = "rbxassetid://14471716913"
+	local HideButton = Instance.new("ImageButton")
 	HideButton.Parent = frameTP
-	HideButton.Size = UDim2.new(0, 40, 0, 30)
-	HideButton.Position = UDim2.new(0, 220, 0, 0)
-	HideButton.BackgroundColor3 = Color3.new(0, 0, 1)
+	HideButton.Size = UDim2.new(0, 26, 0, 30)
+	HideButton.Position = UDim2.new(0, 247, 0, 0)
+	HideButton.BackgroundColor3 = Color3.new(0.0823529, 0.576471, 0.0196078)
 	UICorner:Clone().Parent = HideButton
-	HideButton.TextScaled = true
-	HideButton.Text = "Hide"
+	HideButton.Image = "http://www.roblox.com/asset/?id=3510179260"
+	local CharButton = Instance.new("ImageButton")
+	CharButton.Parent = frameTP
+	CharButton.Size = UDim2.new(0, 26, 0, 30)
+	CharButton.Position  = UDim2.new(0, 220, 0, 0)
+	CharButton.BackgroundColor3 = Color3.new(0, 0, 0.513725)
+	CharButton.Image = "rbxassetid://14493831079"
+	UICorner:Clone().Parent = CharButton
 	local DataPart = Instance.new("ObjectValue")
 	DataPart.Value = PartTP
 	DataPart.Parent = frameTP
-	click(NameTP, DelButton, DataPart, frameTP, HideButton)
+	click(NameTP, DelButton, DataPart, frameTP, HideButton, CharButton, EditF)
+end)
+mouseadd.MouseButton1Click:Connect(function()
+	MClick(mouseadd)
 end)
 local gui = button
 local dragging
@@ -170,14 +201,23 @@ local startPos
 function Lerp(a, b, m)
 	Frame.Position = button.Position
 	SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,Frame.Position.Y.Offset+Frame.Size.Y.Offset)
+	local EditFrameMenu = EditF:FindFirstChild("EditFrame")
 	if button.Position.X.Offset > 340 then
 		Frame.Position = button.Position - UDim2.new(0,260,0,0)
 		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset-5,0,SelectSize.Position.Y.Offset)
 		buttonadd.Position = UDim2.new(0,0,0,0)
+		mouseadd.Position = UDim2.new(0,-40,0,0)
+		if EditFrameMenu then
+			EditFrameMenu.Position = Frame.Position + UDim2.new(0,-120,0,30)
+		end
 	else
 		Frame.Position = button.Position
 		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,SelectSize.Position.Y.Offset)
 		buttonadd.Position = UDim2.new(0,260,0,0)
+		mouseadd.Position = UDim2.new(0,300,0,0)
+		if EditFrameMenu then
+			EditFrameMenu.Position = Frame.Position + UDim2.new(0,300,0,30)
+		end
 	end
 	return a + (b - a) * m
 end;
@@ -197,13 +237,21 @@ function Update(dt)
 	gui.Position = UDim2.new(startPos.X.Scale, Lerp(gui.Position.X.Offset, xGoal, dt * DRAG_SPEED), startPos.Y.Scale, Lerp(gui.Position.Y.Offset, yGoal, dt * DRAG_SPEED))
 	Frame.Position = button.Position
 	SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,Frame.Position.Y.Offset+Frame.Size.Y.Offset)
+	local EditFrameMenu = EditF:FindFirstChild("EditFrame")
 	if button.Position.X.Offset > 340 then
 		Frame.Position = button.Position - UDim2.new(0,260,0,0)
 		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset-5,0,SelectSize.Position.Y.Offset)
+		mouseadd.Position = UDim2.new(0,-40,0,0)
+		if EditFrameMenu then
+			EditFrameMenu.Position = Frame.Position + UDim2.new(0,-120,0,30)
+		end
 	else
 		Frame.Position = button.Position
 		SelectSize.Position = UDim2.new(0,Frame.Position.X.Offset+300,0,SelectSize.Position.Y.Offset)
-
+		mouseadd.Position = UDim2.new(0,300,0,0)
+		if EditFrameMenu then
+			EditFrameMenu.Position = Frame.Position + UDim2.new(0,300,0,30)
+		end
 	end
 end;
 gui.InputBegan:Connect(function(input)
@@ -226,7 +274,7 @@ gui.InputChanged:Connect(function(input)
 	end
 end)
 runService.Heartbeat:Connect(Update)
-function click(Tp, Del, Part, frame, Hide)
+function click(Tp, Del, Part, frame, Hide, Edit, EditF)
 	while wait()do
 		Tp.MouseButton1Click:Connect(function()
 			if a == false then
@@ -250,17 +298,164 @@ function click(Tp, Del, Part, frame, Hide)
 		Hide.MouseButton1Click:Connect(function()
 			if a == false then
 				a = true
-				if Hide.Text == "Hide" then
-					Hide.Text = "Show"
+				if Hide.Image == "http://www.roblox.com/asset/?id=3510179260" then
+					Hide.Image = "http://www.roblox.com/asset/?id=3510181096"
 					Part.Value.Transparency = 1
 					Part.Value.BillboardGui.Enabled = false
 				else
-					Hide.Text = "Hide"
+					Hide.Image = "http://www.roblox.com/asset/?id=3510179260"
 					Part.Value.Transparency = 0.7
 					Part.Value.BillboardGui.Enabled = true
 				end
 				wait(.1)
 				a = false
+			end
+		end)
+		Edit.MouseButton1Click:Connect(function()
+			if a == false then
+				a = true
+				EditF:ClearAllChildren()
+				local EditFrame = Instance.new("Frame")
+				EditFrame.Parent = EditF
+				EditFrame.Size = UDim2.new(0,120,0,90)
+				if button.Position.X.Offset > 340 then
+					EditFrame.Position = Frame.Position + UDim2.new(0,-80,0,30)
+				else
+					EditFrame.Position = Frame.Position + UDim2.new(0,300,0,30)
+				end
+				EditFrame.Name = "EditFrame"
+				EditFrame.Transparency = 0.7
+				EditFrame.BackgroundColor3 = Color3.new(0.32549, 0.32549, 0.52549)
+				local CloseEFrame = Instance.new("TextButton")
+				CloseEFrame.Parent = EditFrame
+				CloseEFrame.Size = UDim2.new(0,10,0,10)
+				CloseEFrame.BackgroundColor3 = Color3.new(1, 0, 0)
+				CloseEFrame.TextScaled = true
+				CloseEFrame.Name = "Close"
+				CloseEFrame.Text = "X"
+				CloseEFrame.Position = UDim2.new(0,EditFrame.Size.X.Offset-10,0,0)
+				wait(.1)
+				a = false
+				Editt(EditFrame, CloseEFrame, Part, Tp)
+			end
+		end)
+	end
+end
+function Editt(EFrame, EClose, Datapart, TpButton)
+	local EditName = Instance.new("TextBox")
+	EditName.Parent = EFrame
+	EditName.Size = UDim2.new(0, EFrame.Size.X.Offset, 0, 30)
+	EditName.Position = UDim2.new(0, 0, 0, 10)
+	EditName.BackgroundColor3 = Color3.new(0.184314, 0.290196, 0.364706)
+	EditName.BorderSizePixel = 1
+	EditName.Font = Enum.Font.SourceSans
+	EditName.Text = Datapart.Value.BillboardGui.TextLabel.Text
+	EditName.PlaceholderText = "Название точки"
+	EditName.TextColor3 = Color3.new(1, 1, 1)
+	EditName.TextScaled = true
+	EditName.Transparency = 0.4
+	EditName.ClearTextOnFocus = false
+	EditName.Name = "EditName"
+	while wait()do
+		EClose.MouseButton1Click:Connect(function()
+			if a == false then
+				a = true
+				EFrame:Destroy()
+				wait(.1)
+				a = false
+			end
+		end)
+		EditName.Changed:Connect(function()
+			Datapart.Value.BillboardGui.TextLabel.Text = EditName.Text
+			TpButton.Text = EditName.Text
+		end)
+	end
+end
+function MClick(mbutton)
+	wait(0.2)
+	mouseadd.BackgroundColor3 = Color3.new(0.564706, 1, 0.564706)
+	mouseadd.Text = "Mouse (Please click)"
+	mouseadd.TextColor3 = Color3.new(0, 0, 0)
+	if h == 2 then
+		h = 0
+	end
+	print("please click")
+	while wait()do
+		game.Players.LocalPlayer:GetMouse().Button1Down:Connect(function()
+			if h == 0 then
+				h = 1
+				wait(.1)
+				local PartTP = Instance.new("Part")
+				local BilGui = Instance.new("BillboardGui")
+				local TextLabel = Instance.new("TextLabel")
+				local frameTP = Instance.new("Frame")
+				local NameTP = Instance.new("TextButton")
+				local UICorner = Instance.new("UICorner")
+				PartTP.Position = game.Players.LocalPlayer:GetMouse().Hit.Position + Vector3.new(0,3,0)
+				PartTP.CanCollide = false
+				PartTP.Transparency = 0.7
+				PartTP.Parent = workspace
+				PartTP.Anchored = true
+				PartTP.Size = Vector3.new(1, 1, 1)
+				PartTP.Name = TextBox.Text.."_"..game.Players.LocalPlayer.Name
+				BilGui.Parent = PartTP
+				BilGui.Size = UDim2.new(0, 100, 0, 100)
+				BilGui.StudsOffset = Vector3.new(0, 1, 0)
+				BilGui.AlwaysOnTop = true
+				BilGui.Adornee = PartTP
+				BilGui.Enabled = true
+				TextLabel.Parent = BilGui
+				TextLabel.Size = UDim2.new(0, 100, 0, 100)
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Text = TextBox.Text
+				frameTP.Parent = ScFrame
+				frameTP.Size = UDim2.new(0, 300, 0, 30)
+				frameTP.BackgroundTransparency = 0.8
+				NameTP.Parent = frameTP
+				NameTP.BackgroundTransparency = 1
+				NameTP.TextScaled = true
+				NameTP.Text = TextBox.Text
+				NameTP.Size = UDim2.new(0, 210, 0, 30)
+				NameTP.Position = UDim2.new(0,10,0,0)
+				UICorner.Parent = frameTP
+				ScFrame.CanvasSize = ScFrame.CanvasSize + UDim2.new(0,0,0,30)
+				i += 1
+				local id = Instance.new("TextLabel")
+				id.Parent = frameTP
+				id.Size = UDim2.new(0, 10, 0, 30)
+				id.TextScaled = true
+				id.Text = i
+				id.BackgroundTransparency = 1
+				local DelButton = Instance.new("ImageButton")
+				DelButton.Parent = frameTP
+				DelButton.Size = UDim2.new(0, 26, 0, 30)
+				DelButton.Position = UDim2.new(0, 274, 0, 0)
+				DelButton.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
+				UICorner:Clone().Parent = DelButton
+				DelButton.Image = "rbxassetid://14471716913"
+				local HideButton = Instance.new("ImageButton")
+				HideButton.Parent = frameTP
+				HideButton.Size = UDim2.new(0, 26, 0, 30)
+				HideButton.Position = UDim2.new(0, 247, 0, 0)
+				HideButton.BackgroundColor3 = Color3.new(0.0823529, 0.576471, 0.0196078)
+				UICorner:Clone().Parent = HideButton
+				HideButton.Image = "http://www.roblox.com/asset/?id=3510179260"
+				local CharButton = Instance.new("ImageButton")
+				CharButton.Parent = frameTP
+				CharButton.Size = UDim2.new(0, 26, 0, 30)
+				CharButton.Position  = UDim2.new(0, 220, 0, 0)
+				CharButton.BackgroundColor3 = Color3.new(0, 0, 0.513725)
+				CharButton.Image = "rbxassetid://14493831079"
+				UICorner:Clone().Parent = CharButton
+				local DataPart = Instance.new("ObjectValue")
+				DataPart.Value = PartTP
+				DataPart.Parent = frameTP
+				mouseadd.BackgroundColor3 = Color3.new(0.129412, 0.203922, 0.254902)
+				mouseadd.Text = "Mouse (BETA)"
+				mouseadd.TextColor3 = Color3.new(1, 1, 1)
+				wait(.1)
+				h = 2
+				click(NameTP, DelButton, DataPart, frameTP, HideButton, CharButton, EditF)
 			end
 		end)
 	end
