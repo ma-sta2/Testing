@@ -1,0 +1,155 @@
+local TweenS = game:GetService("TweenService")
+local Waiter = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
+local ChatOpened = false
+local Opened = false
+
+local AnimationName = {"None", "Sit", "Lay"}
+local AnimationID = {"None", "rbxassetid://18320105036", "rbxassetid://18320134652"}
+
+local Animation = Instance.new("Animation")
+Animation.AnimationId = "rbxassetid://0"
+local animationTrack = Waiter:LoadAnimation(Animation)
+
+game:GetService("StarterGui"):SetCore("SendNotification", { 
+	Title = "Emotion script";
+	Text = "by Notebook777777_2 (v01)";
+	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"
+})
+
+wait(3)
+
+local plr = game.Players.LocalPlayer
+local GUI = Instance.new("ScreenGui", plr.PlayerGui)
+GUI.Name = "EmotionScript"
+local Button = Instance.new("ImageButton", GUI)
+Button.Size = UDim2.new(0.316, 0,0.292, 0)
+Button.Position = UDim2.new(0, 0,0, 0)
+Button.BackgroundTransparency = 1
+
+local ButtonSize = Instance.new("TextButton", GUI)
+ButtonSize.Size = UDim2.new(0.032, 0,0, 0)
+ButtonSize.Position = UDim2.new(0, 0,0, 0)
+ButtonSize.BackgroundTransparency = 0.5
+ButtonSize.TextTransparency = 1
+ButtonSize.TextScaled = true
+ButtonSize.Text = "Size"
+
+local Menu = Instance.new("Frame", GUI)
+Menu.AnchorPoint = Vector2.new(1,0)
+Menu.Size = UDim2.new(0, 240, 0.29, 0)
+Menu.Position = UDim2.new(0, 0,0, 0)
+Menu.BackgroundTransparency = 0
+Menu.BackgroundColor3 = Color3.new(0.254902, 0.219608, 0.219608)
+
+local ScrollBar = Instance.new("ScrollingFrame", GUI)
+ScrollBar.AnchorPoint = Vector2.new(1,0)
+ScrollBar.Size = UDim2.new(0, 240, 0.29, 0)
+ScrollBar.Position = UDim2.new(0, 0,0, 0)
+ScrollBar.BackgroundTransparency = 1
+ScrollBar.BackgroundColor3 = Color3.new(0.254902, 0.219608, 0.219608)
+ScrollBar.HorizontalScrollBarInset = Enum.ScrollBarInset.Always
+ScrollBar.CanvasSize = UDim2.new(2,0,0,0)
+ScrollBar.ScrollBarThickness = 0
+
+local Text = Instance.new("TextLabel", GUI)
+Text.Size = UDim2.new(0.316, 0,0.292, 0)
+Text.Position = UDim2.new(0, 0,0, 0)
+Text.TextTransparency = 1
+Text.BackgroundTransparency = 1
+Text.Text = "Emotions button"
+
+local Rotation = Instance.new("IntValue")
+Rotation.Value = 0
+
+local UIConter = Instance.new("UICorner")
+UIConter.CornerRadius = UDim.new(0, 10)
+UIConter:Clone().Parent = Button
+UIConter:Clone().Parent = ButtonSize
+UIConter:Clone().Parent = Menu
+
+
+local UIList = Instance.new("UIListLayout", ScrollBar)
+UIList.VerticalAlignment = Enum.VerticalAlignment.Center
+UIList.Padding = UDim.new(0.005, 0)
+UIList.FillDirection = Enum.FillDirection.Horizontal
+
+TweenS:Create(Button, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
+TweenS:Create(Text, TweenInfo.new(1), {TextTransparency = 0}):Play()
+wait(2)
+Text:Destroy()
+
+if #AnimationName == #AnimationID then
+	for i = 1, #AnimationName do
+		local ButtonPrefab = Instance.new("TextButton")
+		ButtonPrefab.Size = UDim2.new(0,70,0,70)
+		ButtonPrefab.BackgroundTransparency = 0.75
+		ButtonPrefab.Text = AnimationName[i]
+		local IdValue = Instance.new("StringValue", ButtonPrefab)
+		IdValue.Name = "ID"
+		IdValue.Value = AnimationID[i]
+		UIConter:Clone().Parent = ButtonPrefab
+		ButtonPrefab.Parent = ScrollBar
+
+		ButtonPrefab.MouseButton1Click:Connect(function()
+			print(AnimationID[i])
+			if AnimationID[i] == "None" then
+				animationTrack:Stop()
+				Animation.AnimationId = "rbxassetid://0"
+			else
+				if Animation.AnimationId == AnimationID[i] then
+				else
+					animationTrack:Stop()
+					Animation.AnimationId = AnimationID[i]
+					animationTrack = Waiter:LoadAnimation(Animation)
+					animationTrack:Play()
+				end
+			end
+		end)
+	end
+else
+	GUI:Destroy()
+	script:Destroy()
+	error("The number of names and the number of their IDs do not match")
+end
+
+TweenS:Create(Button, TweenInfo.new(0.5), {Size = UDim2.new(0.032, 0,0.292, 0)}):Play()
+wait(0.7)
+TweenS:Create(Button, TweenInfo.new(1), {BackgroundTransparency = 0.5}):Play()
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	if plr.PlayerGui.Chat.Frame.Visible then
+		if ChatOpened == false then
+			ChatOpened = true
+			TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
+			TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
+			
+		end
+	else
+		if ChatOpened then
+			ChatOpened = false
+			TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset,0, 0)}):Play()
+			TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset,0, 0)}):Play()
+			
+		end
+	end
+	ScrollBar.Position = Menu.Position
+	ButtonSize.Position = Button.Position + UDim2.new(0,0,Button.Size.Y.Scale, 5)
+end)
+
+Button.MouseButton1Click:Connect(function()
+	if Opened == false then
+		Opened = true
+		TweenS:Create(Button, TweenInfo.new(0.2), {Position = Button.Position + UDim2.new(0, 250, 0, 0)}):Play()
+		TweenS:Create(Menu, TweenInfo.new(0.2), {Position = Menu.Position + UDim2.new(0, Menu.Size.X.Offset, 0, 0)}):Play()
+		TweenS:Create(Rotation, TweenInfo.new(0.8), {Value = 90}):Play()
+		TweenS:Create(ButtonSize, TweenInfo.new(0.2), {Size = ButtonSize.Size + UDim2.new(0,0,0,15)}):Play()
+		ButtonSize.TextTransparency = 0
+	else
+		Opened = false
+		TweenS:Create(Button, TweenInfo.new(0.2), {Position = Button.Position - UDim2.new(0, 250, 0, 0)}):Play()
+		TweenS:Create(Menu, TweenInfo.new(0.2), {Position = Menu.Position - UDim2.new(0, Menu.Size.X.Offset, 0, 0)}):Play()
+		TweenS:Create(Rotation, TweenInfo.new(0.1), {Value = 0}):Play()
+		TweenS:Create(ButtonSize, TweenInfo.new(0.2), {Size = UDim2.new(Button.Size.X.Scale, 0, 0, 0)}):Play()
+		ButtonSize.TextTransparency = 1
+	end
+end)
