@@ -40,6 +40,24 @@ UIConter:Clone().Parent = Config
 UIConter:Clone().Parent = Cancel
 
 
+local function splitText(text, splitNumber)
+	local firstPart = string.sub(text, 1, splitNumber)
+	local secondPart = string.sub(text, splitNumber+1, string.len(text))
+
+	return firstPart, secondPart
+end
+
+local function containsText(text, substring)
+	local lowerText = string.lower(text)
+	local lowerSubstring = string.lower(substring)
+
+	if string.find(lowerText, lowerSubstring, 1, true) then
+		return true
+	else
+		return false
+	end
+end
+
 -- Функция для отправки сообщения в чат
 local function sendChatMessage(message)
 	local args = {
@@ -54,16 +72,30 @@ humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 sendChatMessage("[⚙️] Bot created")
 
 local function onChatted(message)
-	if message == "@test" then
-		sendChatMessage("[⚙️] Testing")
-	end
-	if message == "@sit" then
-		humanoid.Sit = true
-		sendChatMessage("[⚙️] Done")
-	end
-	if message == "@stay" then
-		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-		sendChatMessage("[⚙️] Done")
+	if containsText(message, "@") then
+		if message == "@test" then
+			sendChatMessage("[⚙️] Testing")
+		elseif message == "@sit" then
+			humanoid.Sit = true
+			sendChatMessage("[⚙️] Done")
+		elseif message == "@stay" then
+			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			sendChatMessage("[⚙️] Done")
+		elseif message == "@delete" then
+			sendChatMessage("[⚙️] Bot deleted")
+			wait(3)
+			player:Kick()
+		elseif containsText(message, "@follow") then
+			local part1, part2 = splitText(message, 8)
+			if game.Workspace:FindFirstChild(part2) then
+				sendChatMessage("[⚙️] Done")
+				workspace.Rig.Humanoid:MoveTo(game.Workspace:FindFirstChild(part2).HumanoidRootPart.Position)
+			else
+				sendChatMessage("[⚙️] Player not found")
+			end
+		else
+			sendChatMessage("[⚙️] Unknown command")
+		end
 	end
 end
 
