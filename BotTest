@@ -4,6 +4,7 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 local Owner = nil
+local PlayerTarger = nil
 
 local GUI = Instance.new("ScreenGui", player.PlayerGui)
 GUI.Name = "Bot"
@@ -38,7 +39,6 @@ UIConter.CornerRadius = UDim.new(0, 10)
 UIConter:Clone().Parent = InputFeld
 UIConter:Clone().Parent = Config
 UIConter:Clone().Parent = Cancel
-
 
 local function splitText(text, splitNumber)
 	local firstPart = string.sub(text, 1, splitNumber)
@@ -78,6 +78,9 @@ local function onChatted(message)
 		elseif message == "@sit" then
 			humanoid.Sit = true
 			sendChatMessage("[⚙️] Done")
+		elseif message == "@jump" then
+			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			sendChatMessage("[⚙️] Done")
 		elseif message == "@stay" then
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 			sendChatMessage("[⚙️] Done")
@@ -89,10 +92,16 @@ local function onChatted(message)
 			local part1, part2 = splitText(message, 8)
 			if game.Workspace:FindFirstChild(part2) then
 				sendChatMessage("[⚙️] Done")
-				workspace.Rig.Humanoid:MoveTo(game.Workspace:FindFirstChild(part2).HumanoidRootPart.Position)
+				PlayerTarger = game.Workspace:FindFirstChild(part2)
 			else
 				sendChatMessage("[⚙️] Player not found")
 			end
+		elseif message == "@unfollow" then
+			PlayerTarger = nil
+			sendChatMessage("[⚙️] Done")
+		elseif message == "@dance" then
+			humanoid:PlayEmote(183208344)
+			sendChatMessage("[⚙️] /e dance")
 		else
 			sendChatMessage("[⚙️] Unknown command")
 		end
@@ -130,3 +139,12 @@ UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		end
 	end
 end)
+
+while wait(1) do
+	if PlayerTarger == nil then
+
+	else
+		humanoid:MoveTo(PlayerTarger.HumanoidRootPart.Position)
+		print("Walk")
+	end
+end
