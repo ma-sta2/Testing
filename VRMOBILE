@@ -1,0 +1,182 @@
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+local plr = game.Players.LocalPlayer
+local Character = plr.Character
+local Hum = plr.Character:WaitForChild("Humanoid")
+
+wait()
+
+local GUI = Instance.new("ScreenGui", plr.PlayerGui)
+GUI.Name = "FakeVRGui"
+local joystick1 = Instance.new("Frame", GUI)
+joystick1.AnchorPoint = Vector2.new(0.5, 0.5)
+joystick1.BackgroundTransparency = 1
+joystick1.Size = UDim2.new(0, 147, 0, 147)
+joystick1.Position = UDim2.new(0.173, 0,0.3, 0)
+joystick1.Name = "LeftJoystick"
+local joystick2 = Instance.new("Frame", GUI)
+joystick2.AnchorPoint = Vector2.new(0.5, 0.5)
+joystick2.BackgroundTransparency = 1
+joystick2.Size = UDim2.new(0, 147, 0, 147)
+joystick2.Position = UDim2.new(0.819, 0,0.3, 0)
+joystick2.Name = "RightJoystick"
+local joystickBackground1 = Instance.new("Frame", GUI)
+joystickBackground1.AnchorPoint = Vector2.new(0.5, 0.5)
+joystickBackground1.BackgroundTransparency = 0.6
+joystickBackground1.BackgroundColor3 = Color3.new(1, 0, 0.0156863)
+joystickBackground1.Size = UDim2.new(0, 100, 0, 100)
+joystickBackground1.Position = joystick1.Position
+joystickBackground1.Name = "Background1"
+local joystickBackground2 = Instance.new("Frame", GUI)
+joystickBackground2.AnchorPoint = Vector2.new(0.5, 0.5)
+joystickBackground2.BackgroundTransparency = 0.6
+joystickBackground2.BackgroundColor3 = Color3.new(0, 0.482353, 1)
+joystickBackground2.Size = UDim2.new(0, 100, 0, 100)
+joystickBackground2.Position = joystick2.Position
+joystickBackground2.Name = "Background2"
+local button1 = Instance.new("ImageButton", GUI)
+button1.AnchorPoint = Vector2.new(0.5, 0.5)
+button1.Position = joystickBackground1.Position
+button1.Size = UDim2.new(0,62,0,62)
+button1.ZIndex = 2
+button1.Name = "Button1"
+local button2 = Instance.new("ImageButton", GUI)
+button2.AnchorPoint = Vector2.new(0.5, 0.5)
+button2.Position = joystickBackground2.Position
+button2.Size = UDim2.new(0,62,0,62)
+button2.ZIndex = 2
+button2.Name = "Button2"
+local UICorter = Instance.new("UICorner")
+UICorter.CornerRadius = UDim.new(1,0)
+UICorter:Clone().Parent = joystickBackground1
+UICorter:Clone().Parent = joystickBackground2
+UICorter:Clone().Parent = button1
+UICorter:Clone().Parent = button2
+local GlobalTouchInput
+local X1 = 0
+local X2 = 0
+local Y1 = 0
+local Y2 = 0
+
+wait()
+
+local FakeLeftArm = Instance.new("Part")
+FakeLeftArm.Parent = workspace
+FakeLeftArm.Name = "FakeLeftArm"
+FakeLeftArm.Anchored = true
+FakeLeftArm.Transparency = 1
+FakeLeftArm.Size = Character["Left Arm"].Size + Vector3.new(0,1,0)
+FakeLeftArm.CFrame = Character["Left Arm"].CFrame
+FakeLeftArm.BrickColor = BrickColor.new("Bright red")
+FakeLeftArm.CanCollide = false
+FakeLeftArm.CanQuery = false
+
+local FakeRightArm = Instance.new("Part")
+FakeRightArm.Parent = workspace
+FakeRightArm.Name = "FakeRightArm"
+FakeRightArm.Anchored = true
+FakeRightArm.Transparency = 1
+FakeRightArm.Size = Character["Right Arm"].Size + Vector3.new(0,1,0)
+FakeRightArm.CFrame = Character["Right Arm"].CFrame
+FakeRightArm.BrickColor = BrickColor.new("Bright blue")
+FakeRightArm.CanCollide = false
+FakeRightArm.CanQuery = false
+
+local InFirstPerson1 = Instance.new("Part")
+InFirstPerson1.Parent = workspace
+InFirstPerson1.Name = "InFirstPerson1"
+InFirstPerson1.Anchored = true
+InFirstPerson1.Transparency = 0.5
+InFirstPerson1.Size = Character["Left Arm"].Size - Vector3.new(0.2,0,0.2)
+InFirstPerson1.CFrame = Character["Left Arm"].CFrame
+InFirstPerson1.CanCollide = false
+InFirstPerson1.CanQuery = false
+
+local InFirstPerson2 = Instance.new("Part")
+InFirstPerson2.Parent = workspace
+InFirstPerson2.Name = "InFirstPerson2"
+InFirstPerson2.Anchored = true
+InFirstPerson2.Transparency = 0.5
+InFirstPerson2.Size = Character["Right Arm"].Size - Vector3.new(0.2,0,0.2)
+InFirstPerson2.CFrame = Character["Right Arm"].CFrame
+InFirstPerson2.CanCollide = false
+InFirstPerson2.CanQuery = false
+
+wait()
+Character["Right Arm"]:BreakJoints()
+Character["Left Arm"]:BreakJoints()
+
+local function setupJoystick(joystick, joystickBackground, button, characterName, NumberJoystick)
+	local standardPos = button.Position
+	local standardPosBackground = joystickBackground.Position
+	local move = false
+	local touchInput = nil
+	local positionX, positionY, distance = nil, nil, nil
+
+
+	local standardPosAnimation = TweenService:Create(joystickBackground, TweenInfo.new(0.1), {Size = UDim2.new(0, 100, 0, 100), BackgroundTransparency = 0.6})
+
+	button.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.Touch then
+			if GlobalTouchInput == input then
+
+			else
+				move = true
+				touchInput = input
+				GlobalTouchInput = input
+
+				standardPosAnimation:Cancel()
+				button.Position = UDim2.new(0, input.Position.X, 0, input.Position.Y)
+				joystickBackground.Size = UDim2.new(0, 90, 0, 90)
+				joystickBackground.BackgroundTransparency = 0.6
+			end
+		end
+	end)
+	UserInputService.InputEnded:Connect(function(input)
+		if input == touchInput then
+			move = false
+			touchInput = nil
+			standardPosAnimation:Play()
+		end
+	end) 
+
+	local function getDistance(point1, point2)
+		return (point1 - point2).Magnitude
+	end
+
+	UserInputService.TouchMoved:Connect(function(input)
+		if move and input == touchInput then
+			button.Position = UDim2.new(0, input.Position.X, 0, input.Position.Y)
+			distance = getDistance(Vector2.new(button.Position.X.Offset/2, button.Position.Y.Offset/2), Vector2.new(joystickBackground.Position.X.Offset/2, joystickBackground.Position.Y.Offset/2))
+			local touchPos = Vector2.new(input.Position.X, input.Position.Y)
+
+			--//    Joystick script   \\--
+			
+			if NumberJoystick == 1 then
+				X1 = ((button.AbsolutePosition.X - button.AbsoluteSize.X/2) - joystickBackground.AbsolutePosition.X)*2
+				Y1 = ((button.AbsolutePosition.Y - button.AbsoluteSize.Y/2) - joystickBackground.AbsolutePosition.Y)*2
+				print(X1, Y1)
+			end
+			if NumberJoystick == 2 then
+				X2 = ((button.AbsolutePosition.X - button.AbsoluteSize.X/2) - joystickBackground.AbsolutePosition.X)*2
+				Y2 = ((button.AbsolutePosition.Y - button.AbsoluteSize.Y/2) - joystickBackground.AbsolutePosition.Y)*2
+				print(X2, Y2)
+			end
+		end
+	end)
+end
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	FakeRightArm.CFrame = Character.Torso.CFrame * CFrame.new(Vector3.new(1.5, 0.5, 0))
+	FakeRightArm.Orientation = Character.Torso.Orientation - Vector3.new(Y2, X2, 0)
+	FakeLeftArm.CFrame = Character.Torso.CFrame * CFrame.new(Vector3.new(-1.5, 0.5, 0))
+	FakeLeftArm.Orientation = Character.Torso.Orientation - Vector3.new(Y1, X1, 0)
+	Character["Right Arm"].CFrame = FakeRightArm.CFrame * CFrame.new(Vector3.new(0, -0.5, 0))
+	Character["Left Arm"].CFrame = FakeLeftArm.CFrame * CFrame.new(Vector3.new(0, -0.5, 0))
+	InFirstPerson1.CFrame = Character["Left Arm"].CFrame
+	InFirstPerson2.CFrame = Character["Right Arm"].CFrame
+end)
+
+setupJoystick(joystick1, joystickBackground1, button1, game.Players.LocalPlayer.Name.."plr", 1)
+
+setupJoystick(joystick2, joystickBackground2, button2, game.Players.LocalPlayer.Name.."plr", 2)
