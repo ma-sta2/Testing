@@ -1,0 +1,100 @@
+local UserInputService = game:GetService("UserInputService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local Owner = nil
+
+local GUI = Instance.new("ScreenGui", player.PlayerGui)
+GUI.Name = "Bot"
+
+local InputFeld = Instance.new("TextBox", GUI)
+InputFeld.Size = UDim2.new(0, 200,0, 50)
+InputFeld.Position = UDim2.new(0.5, 0, 0.5, 0)
+InputFeld.AnchorPoint = Vector2.new(0.5, 0.5)
+InputFeld.TextScaled = true
+InputFeld.Text = ""
+InputFeld.PlaceholderText = "Enter Name"
+InputFeld.BackgroundColor3 = Color3.new(0.776471, 0.776471, 0.776471)
+
+local Config = Instance.new("TextButton", GUI)
+Config.Size = UDim2.new(0, 200,0, 25)
+Config.Position = UDim2.new(0.5, 0, 0.5, 45)
+Config.AnchorPoint = Vector2.new(0.5, 0.5)
+Config.TextScaled = true
+Config.BackgroundColor3 = Color3.new(0.203922, 1, 0.203922)
+Config.Text = "Confign"
+
+local Cancel = Instance.new("TextButton", GUI)
+Cancel.Size = UDim2.new(0, 200,0, 25)
+Cancel.Position = UDim2.new(0.5, 0, 0.5, 70)
+Cancel.AnchorPoint = Vector2.new(0.5, 0.5)
+Cancel.TextScaled = true
+Cancel.BackgroundColor3 = Color3.new(1, 0.266667, 0.215686)
+Cancel.Text = "Cancel"
+
+local UIConter = Instance.new("UICorner")
+UIConter.CornerRadius = UDim.new(0, 10)
+UIConter:Clone().Parent = InputFeld
+UIConter:Clone().Parent = Config
+UIConter:Clone().Parent = Cancel
+
+
+-- Функция для отправки сообщения в чат
+local function sendChatMessage(message)
+	local args = {
+		[1] = message,
+		[2] = "All"
+	}
+	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
+end
+
+
+humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+sendChatMessage("[⚙️] Bot created")
+
+local function onChatted(message)
+	if message == "@test" then
+		sendChatMessage("[⚙️] Testing")
+	end
+	if message == "@sit" then
+		humanoid.Sit = true
+		sendChatMessage("[⚙️] Done")
+	end
+	if message == "@stay" then
+		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+		sendChatMessage("[⚙️] Done")
+	end
+end
+
+Config.MouseButton1Click:Connect(function()
+	if game.Workspace:FindFirstChild(InputFeld.Text) then
+		Owner = InputFeld.Text
+		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+		sendChatMessage("[⚙️] Owner: "..Owner)
+		InputFeld:Destroy()
+		Config:Destroy()
+		Cancel.AnchorPoint = Vector2.new(0.5, 1)
+		game:GetService("TweenService"):Create(Cancel, TweenInfo.new(0.8), {Position = UDim2.new(0.5, 0, 1, 0)}):Play()
+		game.Players[Owner].Chatted:Connect(onChatted)
+	else
+		InputFeld.Text = "Player not found"
+		InputFeld.BackgroundColor3 = Color3.new(0.776471, 0, 0)
+		game:GetService("TweenService"):Create(InputFeld, TweenInfo.new(0.4), {BackgroundColor3 = Color3.new(0.776471, 0.776471, 0.776471)}):Play()
+	end
+end)
+Cancel.MouseButton1Click:Connect(function()
+	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+	sendChatMessage("[⚙️] Bot deleted")
+	GUI:Destroy()
+	script:Destroy()
+end)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+	if not gameProcessed then
+		if input.KeyCode == Enum.KeyCode.Z then
+			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+			sendChatMessage("Jump")
+		end
+	end
+end)
