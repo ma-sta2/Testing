@@ -12,7 +12,7 @@ local animationTrack = Waiter:LoadAnimation(Animation)
 
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "Emotion script";
-	Text = "by Notebook777777_2 (v01)";
+	Text = "by Notebook777777_2 (v02)";
 	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"
 })
 
@@ -109,19 +109,21 @@ else
 end
 
 game:GetService("RunService").RenderStepped:Connect(function()
-	if plr.PlayerGui.Chat.Frame.Visible then
-		if ChatOpened == false then
-			ChatOpened = true
-			TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
-			TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
-			
-		end
-	else
-		if ChatOpened then
-			ChatOpened = false
-			TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset,0, 0)}):Play()
-			TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset,0, 0)}):Play()
-			
+	if plr.PlayerGui:FindFirstChild("Chat") then
+		if plr.PlayerGui.Chat.Frame.Visible then
+			if ChatOpened == false then
+				ChatOpened = true
+				TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
+				TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset, plr.PlayerGui.Chat.Frame.Size.Y.Scale, plr.PlayerGui.Chat.Frame.Size.Y.Offset)}):Play()
+
+			end
+		else
+			if ChatOpened then
+				ChatOpened = false
+				TweenS:Create(Button, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Button.Position.X.Scale, Button.Position.X.Offset,0, 0)}):Play()
+				TweenS:Create(Menu, TweenInfo.new(0.7, Enum.EasingStyle.Elastic, Enum.EasingDirection.Out), {Position = UDim2.new(Menu.Position.X.Scale, Menu.Position.X.Offset,0, 0)}):Play()
+
+			end
 		end
 	end
 	ScrollBar.Position = Menu.Position
