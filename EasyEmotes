@@ -21,6 +21,8 @@ wait(3)
 local plr = game.Players.LocalPlayer
 local GUI = Instance.new("ScreenGui", plr.PlayerGui)
 GUI.Name = "EmotionScript"
+GUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+GUI.ResetOnSpawn = false
 local Button = Instance.new("ImageButton", GUI)
 Button.Size = UDim2.new(0.032, 0,0.292, 0)
 Button.Position = UDim2.new(0, 0,0, 0)
