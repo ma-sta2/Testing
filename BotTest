@@ -5,6 +5,11 @@ local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 local Owner = nil
 local PlayerTarger = nil
+local Scene = nil
+local SceneLoad = 0
+local SceneLoop = false
+local SceneStop = false
+local Icon = "⚙️"
 
 local GUI = Instance.new("ScreenGui", player.PlayerGui)
 GUI.Name = "Bot"
@@ -60,50 +65,116 @@ end
 
 -- Функция для отправки сообщения в чат
 local function sendChatMessage(message)
+	local FullIcon = "["..Icon.."] "
 	local args = {
-		[1] = message,
+		[1] = FullIcon.." "..message,
 		[2] = "All"
 	}
 	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(unpack(args))
 end
 
+local function LoadScene()
+	SceneLoad = 0
+	for _, child in ipairs(workspace:FindFirstChild("Frames"):GetChildren()) do
+		SceneLoad += 1
+		local NamePart = "Frame"..SceneLoad
+		local Folder = workspace:FindFirstChild("Frames")
+		local FramePart = Folder:FindFirstChild(NamePart)
+		humanoid:MoveTo(FramePart.Position)
+		wait(FramePart.Sec.Value)
+	end
+	if SceneStop == false then
+		if SceneLoop then
+			LoadScene()
+		else
+			sendChatMessage("Done")
+		end
+	else
+		SceneStop = false
+	end
+end
+
 
 humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-sendChatMessage("[⚙️] Bot created")
+sendChatMessage("Bot created")
 
 local function onChatted(message)
 	if containsText(message, "@") then
 		if message == "@test" then
-			sendChatMessage("[⚙️] Testing")
+			sendChatMessage("Testing")
 		elseif message == "@sit" then
 			humanoid.Sit = true
-			sendChatMessage("[⚙️] Done")
+			sendChatMessage("Done")
 		elseif message == "@jump" then
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			sendChatMessage("[⚙️] Done")
+			sendChatMessage("Done")
 		elseif message == "@stay" then
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			sendChatMessage("[⚙️] Done")
+			sendChatMessage("Done")
 		elseif message == "@delete" then
-			sendChatMessage("[⚙️] Bot deleted")
-			wait(3)
+			sendChatMessage("Bot deleted")
+			wait(1)
 			player:Kick()
 		elseif containsText(message, "@follow") then
 			local part1, part2 = splitText(message, 8)
 			if game.Workspace:FindFirstChild(part2) then
-				sendChatMessage("[⚙️] Done")
+				sendChatMessage("Done")
 				PlayerTarger = game.Workspace:FindFirstChild(part2)
 			else
-				sendChatMessage("[⚙️] Player not found")
+				sendChatMessage("Player not found")
 			end
 		elseif message == "@unfollow" then
 			PlayerTarger = nil
-			sendChatMessage("[⚙️] Done")
+			sendChatMessage("Done")
 		elseif message == "@dance" then
-			humanoid:PlayEmote(183208344)
-			sendChatMessage("[⚙️] /e dance")
+			humanoid:PlayEmote("Dance")
+			sendChatMessage("/e dance")
+		elseif  containsText(message, "@icon") then
+			local part1, part2 = splitText(message, 6)
+			Icon = part2
+			sendChatMessage("New icon: "..Icon)
+		elseif  containsText(message, "@scene") then
+			local part1, part2 = splitText(message, 7)
+			if part2 == "new" or part2 == "New" then
+				Scene = 0
+				if workspace:FindFirstChild("Frames") then
+					workspace:FindFirstChild("Frames"):Destroy()
+				end
+				local Frames = Instance.new("Folder", workspace)
+				Frames.Name = "Frames"
+				sendChatMessage('New scene created, write "@frame (second)" to create a frame')
+			elseif part2 == "start" or part2 == "Start" then
+				sendChatMessage("Scene started")
+				LoadScene()
+			elseif part2 == "loop" or part2 == "Loop" then
+				if SceneLoop == false then
+					SceneLoop = true
+					sendChatMessage("Scene looped: True")
+				else
+					SceneLoop = false
+					sendChatMessage("Scene looped: False")
+				end
+			elseif part2 == "stop" or part2 == "Stop" then
+				SceneStop = true
+				LoadScene():Cancel()
+				sendChatMessage("Scene stopped")
+			end
+		elseif containsText(message, "@frame") or containsText(message, "@Frame") then
+			local part1, part2 = splitText(message, 7)
+			Scene += 1
+			local Part = Instance.new("Part", workspace:FindFirstChild("Frames"))
+			Part.Anchored = true
+			Part.Size = Vector3.new(1,1,1)
+			Part.CanCollide = false
+			Part.Transparency = 0.5
+			Part.Name = "Frame"..Scene
+			Part.Position = workspace:FindFirstChild(Owner).HumanoidRootPart.Position
+			local Seconds = Instance.new("IntValue", Part)
+			Seconds.Name = "Sec"
+			Seconds.Value = part2
+			sendChatMessage("Frame "..Scene.." created")
 		else
-			sendChatMessage("[⚙️] Unknown command")
+			sendChatMessage("Unknown command")
 		end
 	end
 end
@@ -112,7 +183,7 @@ Config.MouseButton1Click:Connect(function()
 	if game.Workspace:FindFirstChild(InputFeld.Text) then
 		Owner = InputFeld.Text
 		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-		sendChatMessage("[⚙️] Owner: "..Owner)
+		sendChatMessage("Owner: "..Owner)
 		InputFeld:Destroy()
 		Config:Destroy()
 		Cancel.AnchorPoint = Vector2.new(0.5, 1)
@@ -126,7 +197,7 @@ Config.MouseButton1Click:Connect(function()
 end)
 Cancel.MouseButton1Click:Connect(function()
 	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-	sendChatMessage("[⚙️] Bot deleted")
+	sendChatMessage("Bot deleted")
 	GUI:Destroy()
 	script:Destroy()
 end)
