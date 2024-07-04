@@ -12,7 +12,7 @@ local animationTrack = Waiter:LoadAnimation(Animation)
 
 game:GetService("StarterGui"):SetCore("SendNotification", { 
 	Title = "Emotion script";
-	Text = "by Notebook777777_2 (v02)";
+	Text = "by Notebook777777_2 (v0.2.2)";
 	Icon = "rbxthumb://type=Asset&id=5107182114&w=150&h=150"
 })
 
@@ -89,7 +89,8 @@ if #AnimationName == #AnimationID then
 			elseif AnimationID[i] == "Sit" then
 				Waiter.Sit = true
 			elseif AnimationID[i] == "Lay" then
-				plr.Character.HumanoidRootPart.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position + Vector3.new(0, -2.5, 0), plr.Character.HumanoidRootPart.Position + Vector3.new(0, 1, 0))
+				plr.Character.HumanoidRootPart.CFrame = CFrame.new(plr.Character.HumanoidRootPart.Position, plr.Character.HumanoidRootPart.Position + Vector3.new(0, 1, 0))
+				wait(2)
 				plr.Character.HumanoidRootPart.Anchored = true
 			else
 				if Animation.AnimationId == AnimationID[i] then
