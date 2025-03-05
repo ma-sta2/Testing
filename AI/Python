@@ -1,0 +1,28 @@
+from flask import Flask
+from mistralai import Mistral
+import random
+
+app = Flask(__name__)
+
+api_key = "Сюда пишем апи ключ от ИИ Мистрал Аи (https://console.mistral.ai/api-keys)"
+model = "mistral-large-latest"
+
+client = Mistral(api_key=api_key)
+
+response_text = "" #Сдеся хранистся последний ответ
+
+@app.route('/send/<query>', methods=['GET'])
+def send_query(query):
+    global response_text
+    try:
+        chat_response = client.chat.complete(
+            model=model,
+            messages=[
+                {"role": "user", "content": query}
+            ]
+        )
+        response_text = chat_response.choices[0].message.content.strip()+" "+str(random.randint(100000, 999999))
+        return response_text, 200
+    except Exception as e:
+        response_text = f"Ошибка при обработке запроса: {str(e)}"
+        return response_text, 500
