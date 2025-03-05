@@ -26,3 +26,7 @@ def send_query(query):
     except Exception as e:
         response_text = f"Ошибка при обработке запроса: {str(e)}"
         return response_text, 500
+
+@app.route('/read', methods=['GET'])
+def read_response():
+    return response_text, 200
